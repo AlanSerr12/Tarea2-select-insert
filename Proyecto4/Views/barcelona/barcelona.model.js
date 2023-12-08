@@ -17,9 +17,35 @@ class Jugadores_Model {
   }
   todos() {
     var html = "";
-    $("#tabla_Jugadores").html(html);
     $.get("../../Controllers/barcelona.controller.php?op=" + this.Ruta, (res) => {
-      
+      res = JSON.parse(res);
+      $.each(res, (index, valor) => {
+        var fondo;
+        if(valor.Rol == "Jugador") fondo ="bg-primary"
+        else if(valor.Rol == "Portero") fondo = "bg-success"
+        html += `<tr>
+                <td>${index + 1}</td>
+                <td>${valor.Nombre}</td>
+                <td>${valor.Apellido}</td>
+                <td><div class="d-flex align-items-center gap-2">
+                <span class="badge ${fondo} rounded-3 fw-semibold">${
+                  valor.Rol
+                }</span>
+            </div></td>
+            <td>
+            <button class='btn btn-success' onclick='editar(${
+              valor.Rol
+            })'>Editar</button>
+            <button class='btn btn-danger' onclick='eliminar(${
+              valor.Rol
+            })'>Eliminar</button>
+            <button class='btn btn-info' onclick='ver(${
+              valor.Rol
+            })'>Ver</button>
+            </td></tr>
+                `;
+      });
+      $("#tabla_Jugadores").html(html);
     });
   }
   insertar() {
