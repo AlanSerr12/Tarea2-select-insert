@@ -45,4 +45,32 @@ class Clase_jugadores
             $con->close();
         }
     }
+    public function actualizar($Nombre, $Apellido, $NJugador, $Edad, $Rol)
+    {
+        try {
+            $con = new Clase_Conectar_Base_Datos();
+            $con = $con->ProcedimientoConectar();
+            $cadena = "UPDATE `jugadores barcelona españa` SET `Nombre`='$Nombre',`Apellido`='$Apellido',`NJugador`='$NJugador',`Edad`='$Edad',`Rol`='$Rol'";
+            $result = mysqli_query($con, $cadena);
+            return "ok";
+        } catch (Throwable $th) {
+            return $th->getMessage();
+        } finally {
+            $con->close();
+        }
+    }
+    public function eliminar($Edad)
+    {
+        try {
+            $con = new Clase_Conectar_Base_Datos();
+            $con = $con->ProcedimientoConectar();
+            $cadena = "delete from jugadores barcelona españa where Edad=$Edad";
+            $result = mysqli_query($con, $cadena);
+            return "ok";
+        } catch (Throwable $th) {
+            return $th->getMessage();
+        } finally {
+            $con->close();
+        }
+    }
 }

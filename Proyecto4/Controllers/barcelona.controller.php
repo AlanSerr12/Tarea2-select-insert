@@ -27,4 +27,21 @@ switch ($_GET["op"]) {
         $datos = $Jugadores->insertar($Nombre, $Apellido, $NJugador, $Edad, $Rol); //llamo al modelo de usuarios e invoco al procedimiento insertar
         echo json_encode($datos); //devuelvo el arreglo en formato json
         break;
+        case 'actualizar':
+            $Nombre = $_POST["Nombre"];
+            $Apellido = $_POST["Apellido"];
+            $NJugador = $_POST["NJugador"];
+            $Edad = $_POST["Edad"];
+            $Rol = $_POST["Rol"];
+    
+            $datos = array(); //defino un arreglo
+            $datos = $Jugadores->actualizar($Nombre, $Apellido, $NJugador, $Edad, $Rol); //llamo al modelo de usuarios e invoco al procedimiento actual
+            echo json_encode($datos); //devuelvo el arreglo en formato json
+            break;
+        case 'eliminar':
+            $Edad = $_POST["Edad"]; //defino una variable para almacenar el id del usuario, la variable se obtiene mediante POST
+            $datos = array(); //defino un arreglo
+            $datos = $Jugadores->eliminar($Edad); //llamo al modelo de usuarios e invoco al procedimiento uno y almaceno en una variable
+            echo json_encode($uno); //devuelvo el arreglo en formato json
+            break;
 }
