@@ -70,6 +70,27 @@ class Jugadores_Model {
    this.limpia_Cajas();    
   }
 
+  uno() {
+    var Edad = this.Edad;
+    $.post(
+      "../../Controllers/barcelona.controller.php?op=uno",
+      { Edad: Edad },
+      (res) => {
+        console.log(res);
+        res = JSON.parse(res);
+        $("#Nombre").val(res.Nombre);
+        $("#Apellido").val(res.Apellido);
+        $("#NJugador").val(res.NJugador);
+        $("#Edad").val(res.Edad);
+        
+
+        document.getElementById("Rol").value = res.Rol; //asiganr al select el valor
+      }
+    );
+    $("#Modal_jugador").modal("show");
+  }
+
+
   numero_repetido(){
     var Numero = this.Numero;
     $.post("../../Controllers/barcelona.controller.php?op=numero_repetido", {Numero: Numero}, (res) => {
@@ -84,6 +105,61 @@ class Jugadores_Model {
         }
 
     })
+  }
+  editar() {
+    var dato = new FormData();
+    dato = this.Rol;
+    $.ajax({
+      url: "../../Controllers/barcelona.controller.php?op=editar",
+      type: "POST",
+      data: dato,
+      contentType: false,
+      processData: false,
+      success: function (res) {
+        res = JSON.parse(res);
+        if (res === "ok") {
+          Swal.fire("jugador", "Jugador Registrado", "success");
+          todos_controlador();
+        } else {
+          Swal.fire("Error", res, "error");
+        }
+      },
+    });
+    this.limpia_Cajas();
+  }
+
+  eliminar() {
+    var Edad = this.Edad;
+
+    Swal.fire({
+      title: "Jugadores",
+      text: "Esta seguro de eliminar al jugador",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.post(
+          "../../Controllers/barcelona.controller.php?op=eliminar",
+          { Edad: Edad },
+          (res) => {
+            console.log(res);
+            
+            res = JSON.parse(res);
+            if (res === "ok") {
+              Swal.fire("jugadores", "Jugador Eliminado", "success");
+              todos_controlador();
+            } else {
+              Swal.fire("Error", res, "error");
+            }
+          }
+        );
+      }
+    });
+
+    this.limpia_Cajas();
   }
 
   limpia_Cajas(){
